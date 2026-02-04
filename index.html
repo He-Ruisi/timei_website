@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>时宜 ShiYi - 时间规划</title>
+    <title>Timei - 画出你的时光轨迹</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <script>
@@ -37,7 +37,6 @@
         background-image: radial-gradient(#dfe6e9 1px, transparent 1px);
         background-size: 20px 20px;
       }
-      /* Custom scrollbar for crayon feel */
       ::-webkit-scrollbar {
         width: 10px;
       }
@@ -49,21 +48,28 @@
         border-radius: 5px;
         border: 2px solid #f0f4f8;
       }
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
     </style>
-  <script type="importmap">
+    <script type="importmap">
 {
   "imports": {
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "react": "https://esm.sh/react@^19.2.4",
-    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
-    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
-    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+    "react": "https://esm.sh/react@19.2.4",
+    "react-dom": "https://esm.sh/react-dom@19.2.4",
+    "react-dom/client": "https://esm.sh/react-dom@19.2.4/client",
+    "react-router-dom": "https://esm.sh/react-router-dom@7.13.0",
+    "@google/genai": "https://esm.sh/@google/genai@1.38.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.563.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/"
   }
 }
 </script>
-</head>
+  </head>
   <body>
     <div id="root"></div>
+    <!-- 明确引入入口文件，在使用 Vite 等构建工具部署至 GitHub Pages 时这是必须的 -->
+    <script type="module" src="./index.tsx"></script>
   </body>
 </html>

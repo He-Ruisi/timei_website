@@ -1,5 +1,5 @@
 {
-  "name": "时宜-官网",
+  "name": "timei-官网",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,10 +10,10 @@
   },
   "dependencies": {
     "react": "^19.2.4",
-    "@google/genai": "^1.38.0",
-    "react-router-dom": "^7.13.0",
-    "lucide-react": "^0.563.0",
-    "react-dom": "^19.2.4"
+    "react-dom": "^19.2.4",
+    "react-router-dom": "7.13.0",
+    "@google/genai": "1.38.0",
+    "lucide-react": "0.563.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

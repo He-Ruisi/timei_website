@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timei 时宜 - 画出你的时光轨迹</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Crayon Font -->
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { 'crayon': ['"ZCOOL KuaiLe"', 'cursive'] },
+                    colors: {
+                        'paper': '#fffdf5',
+                        'crayon-black': '#2d3436',
+                        'crayon-blue': '#74b9ff',
+                        'crayon-red': '#ff7675',
+                        'crayon-yellow': '#ffeaa7',
+                        'crayon-green': '#55efc4',
+                        'crayon-purple': '#a29bfe',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #f0f4f8;
+            background-image: radial-gradient(#dfe6e9 1px, transparent 1px);
+            background-size: 20px 20px;
+            font-family: 'ZCOOL KuaiLe', cursive;
+        }
+        .sketch-shadow { box-shadow: 4px 4px 0px 0px #2d3436; }
+        .sketch-shadow-sm { box-shadow: 2px 2px 0px 0px #2d3436; }
+        .sketch-shadow-hover:hover { box-shadow: 6px 6px 0px 0px #2d3436; transform: translate(-2px, -2px); }
+        .btn-active:active { transform: translate(2px, 2px); box-shadow: none; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #b2bec3; border-radius: 10px; }
+        
+        .hidden-page { display: none !important; }
+        
+        textarea, input {
+            border: 2px solid #2d3436 !important;
+            border-radius: 12px !important;
+            outline: none;
+        }
+
+        .phone-mockup {
+            width: 280px;
+            height: 560px;
+            border: 8px solid #2d3436;
+            border-radius: 40px;
+            position: relative;
+            background: #fffdf5;
+            box-shadow: 12px 12px 0px 0px #2d3436;
+            overflow: hidden;
+        }
+        .phone-mockup::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 25px;
+            background: #2d3436;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+
+        .tracker-card {
+            transition: all 0.2s ease;
+            border: 2px solid #2d3436;
+        }
+
+        .timeline-block {
+            border: 2px solid #2d3436;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-crayon-black">
+
+    <!-- Landing Page -->
+    <div id="landing-page" class="min-h-screen flex flex-col bg-paper overflow-x-hidden">
+        <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto w-full">
+            <div class="text-4xl font-bold tracking-tighter flex items-center">
+                Timei <span class="text-2xl ml-3 text-crayon-blue opacity-80">时宜</span>
+            </div>
+        </nav>
+
+        <main class="flex-1 max-w-6xl mx-auto w-full px-6 py-12">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <!-- Left: Phone Screenshot Area -->
+                <div class="flex-shrink-0 animate-bounce-slow">
+                    <div class="phone-mockup flex flex-col p-4 gap-4">
+                        <div class="flex justify-between items-center mt-6">
+                            <div class="h-4 w-20 bg-gray-200 rounded"></div>
+                            <div class="h-4 w-10 bg-crayon-yellow rounded"></div>
+                        </div>
+                        <div class="h-32 w-full border-2 border-crayon-black rounded-xl bg-crayon-blue/20 p-3">
+                            <div class="h-4 w-2/3 bg-crayon-black/10 rounded mb-2"></div>
+                            <div class="h-10 w-full bg-white border-2 border-crayon-black rounded-lg"></div>
+                        </div>
+                        <div class="flex-1 border-2 border-crayon-black rounded-xl bg-white p-3 space-y-3">
+                            <div class="h-12 w-full bg-crayon-green/20 border-2 border-crayon-black rounded-lg"></div>
+                            <div class="h-12 w-full bg-crayon-yellow/20 border-2 border-crayon-black rounded-lg"></div>
+                            <div class="h-12 w-full bg-crayon-purple/20 border-2 border-crayon-black rounded-lg"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Content -->
+                <div class="flex-1 text-center lg:text-left">
+                    <div class="bg-white px-3 py-1 border-2 border-crayon-black -rotate-1 sketch-shadow inline-block text-sm font-bold mb-6">
+                        Timei Beta v0.1 | 已深度集成 Gemini AI
+                    </div>
+                    
+                    <h1 class="text-6xl md:text-8xl mb-6 leading-tight">
+                        画出你的<br/><span class="text-crayon-blue underline decoration-wavy underline-offset-8">时光</span>轨迹
+                    </h1>
+                    
+                    <p class="text-xl md:text-2xl text-gray-600 max-w-2xl leading-relaxed mb-10">
+                        不只是代办清单。时宜（Timei）帮你将复杂目标拆解为具体行动，用最直觉的“蜡笔”记录你专注的每一分钟。
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <button onclick="startApp()" class="bg-crayon-yellow px-10 py-4 text-xl border-2 border-crayon-black rounded-xl sketch-shadow btn-active flex items-center justify-center gap-2">
+                            开始规划 <i data-lucide="arrow-right"></i>
+                        </button>
+                        <button onclick="toggleQr(true)" class="bg-white px-10 py-4 text-xl border-2 border-crayon-black rounded-xl sketch-shadow btn-active">
+                            加入共创群
+                        </button>
+                    </div>
+
+                    <!-- Trust Badge -->
+                    <div class="mt-12 p-4 border-2 border-dashed border-crayon-green/40 rounded-2xl bg-crayon-green/5 flex items-start gap-4 text-left max-w-xl">
+                        <i data-lucide="shield-check" class="text-crayon-green flex-shrink-0 mt-1"></i>
+                        <p class="text-sm text-gray-500 leading-relaxed font-crayon">
+                            <strong class="text-crayon-black">隐私承诺：</strong> 时宜（Timei）是本地优先应用。未经您的明确许可，我们不会上传您的任何个人数据。您的目标和隐私完全属于您自己。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features -->
+            <div class="mt-32 grid grid-cols-1 md:grid-cols-3 gap-8 w-full mb-20">
+                <div class="p-8 border-2 border-crayon-black rounded-2xl bg-white sketch-shadow">
+                    <div class="w-12 h-12 bg-crayon-yellow rounded-full mb-4 flex items-center justify-center border-2 border-crayon-black">
+                        <i data-lucide="brain-circuit"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl mb-3 text-left">AI 辅助拆解</h3>
+                    <p class="text-left text-gray-500">输入模糊想法，AI 自动细化为任务序列。</p>
+                </div>
+                <div class="p-8 border-2 border-crayon-black rounded-2xl bg-white sketch-shadow">
+                    <div class="w-12 h-12 bg-crayon-blue rounded-full mb-4 flex items-center justify-center border-2 border-crayon-black">
+                        <i data-lucide="layout-dashboard"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl mb-3 text-left">多维记录</h3>
+                    <p class="text-left text-gray-500">支持计时、计数、打卡等多种维度记录生活。</p>
+                </div>
+                <div class="p-8 border-2 border-crayon-black rounded-2xl bg-white sketch-shadow">
+                    <div class="w-12 h-12 bg-crayon-green rounded-full mb-4 flex items-center justify-center border-2 border-crayon-black">
+                        <i data-lucide="coins"></i>
+                    </div>
+                    <h3 class="font-bold text-2xl mb-3 text-left">成长体系</h3>
+                    <p class="text-left text-gray-500">专注时间兑换积分，见证每一刻的价值。</p>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="p-12 text-center text-gray-400 border-t border-dashed border-gray-200 bg-white/50">
+            <div class="flex flex-col items-center gap-4">
+                <div class="flex items-center gap-2 mb-2">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                    <a href="mailto:contact@timei.app" class="hover:text-crayon-blue underline decoration-dotted">contact@timei.app</a>
+                </div>
+                <p class="text-sm">
+                    &copy; 2026 Timei. Designed with Uno5
+                </p>
+                <p class="text-[10px] opacity-60">让时间不仅是被管理，更是被珍藏。</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- App Dashboard -->
+    <div id="app-dashboard" class="hidden-page min-h-screen bg-paper flex flex-col">
+        <header class="bg-white border-b-2 border-crayon-black p-4 flex justify-between items-center sketch-shadow-sm sticky top-0 z-50">
+            <div onclick="goHome()" class="flex items-center gap-2 cursor-pointer hover:opacity-80">
+                <i data-lucide="layout-dashboard" class="text-crayon-blue"></i>
+                <h1 class="text-2xl font-bold tracking-tighter">Timei <span class="text-sm font-normal">时宜</span></h1>
+            </div>
+            <div class="flex items-center gap-6">
+                <div class="flex items-center gap-2 bg-crayon-yellow/30 px-3 py-1 rounded-full border border-crayon-black">
+                    <i data-lucide="coins" class="text-orange-500 w-4 h-4"></i>
+                    <span id="user-points" class="font-bold">150 积分</span>
+                </div>
+                <button class="hover:bg-gray-100 p-2 rounded-full" onclick="alert('商城建设中...')">
+                    <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="flex-1 p-6 grid grid-cols-1 md:grid-cols-12 gap-6 max-h-[calc(100vh-80px)] overflow-hidden">
+            <!-- Left: Goal -->
+            <div class="md:col-span-3 flex flex-col gap-6 overflow-y-auto pr-2 custom-scrollbar">
+                <div class="bg-white p-4 rounded-xl border-2 border-crayon-black sketch-shadow">
+                    <h2 class="text-lg mb-2">新的目标</h2>
+                    <textarea id="goal-input" class="w-full p-3 mb-3 text-sm h-24" placeholder="我想..."></textarea>
+                    <button id="ai-btn" onclick="aiBreakdown()" class="w-full bg-crayon-yellow border-2 border-crayon-black rounded-lg py-2 sketch-shadow-sm btn-active flex items-center justify-center gap-2">
+                        <i data-lucide="brain-circuit" class="w-4 h-4"></i> AI 拆解目标
+                    </button>
+                </div>
+
+                <div>
+                    <h3 class="text-gray-400 mb-3 px-1 uppercase text-[10px] tracking-widest font-bold">待实例化任务</h3>
+                    <div id="tasks-list" class="space-y-3">
+                        <div class="text-center text-gray-300 text-sm py-10">输入目标以开始</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle: Trackers -->
+            <div class="md:col-span-5 flex flex-col gap-4 overflow-y-auto pr-2 custom-scrollbar">
+                <h2 class="text-xl pl-1">我的 Trackers</h2>
+                <div id="trackers-grid" class="grid grid-cols-1 gap-4 pb-10">
+                    <div class="border-2 border-dashed border-gray-200 rounded-xl p-10 flex flex-col items-center justify-center text-gray-300 gap-4">
+                        <i data-lucide="layout-dashboard" class="opacity-10 w-12 h-12"></i>
+                        <p>左侧生成任务后实例化</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Timeline -->
+            <div class="md:col-span-4 bg-white border-2 border-crayon-black rounded-xl sketch-shadow p-4 flex flex-col overflow-hidden">
+                <h2 class="text-xl mb-4 text-center">今日时间轴</h2>
+                <div class="relative flex-1 overflow-y-auto custom-scrollbar border-t-2 border-dashed border-gray-200">
+                    <div id="timeline-container" class="relative h-[1440px]"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- QR Modal -->
+    <div id="qr-modal" class="hidden-page fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div class="bg-paper border-4 border-crayon-black rounded-3xl p-8 max-w-md w-full sketch-shadow relative">
+            <button onclick="toggleQr(false)" class="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded-full">
+                <i data-lucide="x"></i>
+            </button>
+            <h2 class="text-3xl text-center mb-8">加入 Timei 共创群</h2>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="flex flex-col items-center gap-3">
+                    <div class="w-32 h-32 bg-white border-2 border-crayon-black rounded-xl p-2 flex items-center justify-center sketch-shadow-sm">
+                        <div class="bg-crayon-green/20 w-full h-full flex items-center justify-center">
+                            <i data-lucide="message-circle" class="text-crayon-green w-10 h-10"></i>
+                        </div>
+                    </div>
+                    <span class="font-bold">微信群</span>
+                </div>
+                <div class="flex flex-col items-center gap-3">
+                    <div class="w-32 h-32 bg-white border-2 border-crayon-black rounded-xl p-2 flex items-center justify-center sketch-shadow-sm">
+                        <div class="bg-crayon-blue/20 w-full h-full flex items-center justify-center">
+                            <i data-lucide="message-square" class="text-crayon-blue w-10 h-10"></i>
+                        </div>
+                    </div>
+                    <span class="font-bold">Discord</span>
+                </div>
+            </div>
+            <p class="mt-8 text-center text-sm text-gray-500">扫描二维码，与开发者一起<br/>共同定义未来的时间管理工具。</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { GoogleGenAI, Type } from "https://esm.sh/@google/genai@1.38.0";
+
+        // Global State
+        let state = {
+            points: 150,
+            tasks: [],
+            trackers: [],
+            timeBlocks: []
+        };
+
+        const colors = [
+            'bg-crayon-blue/30',
+            'bg-crayon-green/30',
+            'bg-crayon-yellow/30',
+            'bg-crayon-purple/30',
+            'bg-crayon-red/20'
+        ];
+
+        // --- Navigation ---
+        window.startApp = () => {
+            alert("正在准备安装包...\n即将进入 Web 预览版");
+            document.getElementById('landing-page').classList.add('hidden-page');
+            document.getElementById('app-dashboard').classList.remove('hidden-page');
+            renderTimeline();
+        };
+
+        window.goHome = () => {
+            document.getElementById('app-dashboard').classList.add('hidden-page');
+            document.getElementById('landing-page').classList.remove('hidden-page');
+        };
+
+        window.toggleQr = (show) => {
+            document.getElementById('qr-modal').classList.toggle('hidden-page', !show);
+        };
+
+        // --- AI Logic (Mock) ---
+        window.aiBreakdown = async () => {
+            const input = document.getElementById('goal-input').value;
+            if(!input) return;
+            
+            const btn = document.getElementById('ai-btn');
+            btn.innerText = "AI 思考中...";
+            btn.disabled = true;
+
+            await new Promise(r => setTimeout(r, 1500));
+            
+            const mockTasks = [
+                { title: "设定第一步计划", type: "CHECKBOX" },
+                { title: "专注行动 25分钟", type: "TIMER" },
+                { title: "记录进度", type: "COUNTER" }
+            ];
+
+            state.tasks = [...state.tasks, ...mockTasks.map(t => ({...t, id: Math.random(), done: false}))];
+            renderTasks();
+            
+            btn.innerHTML = '<i data-lucide="brain-circuit" class="w-4 h-4"></i> AI 拆解目标';
+            btn.disabled = false;
+            lucide.createIcons();
+        };
+
+        function renderTasks() {
+            const list = document.getElementById('tasks-list');
+            list.innerHTML = state.tasks.filter(t => !t.instantiated).map(t => `
+                <div class="bg-white p-3 rounded-lg border border-gray-300 border-dashed hover:border-crayon-blue transition-colors">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="font-bold text-sm">${t.title}</span>
+                        <span class="text-[10px] bg-gray-100 px-1 rounded text-gray-500">${t.type}</span>
+                    </div>
+                    <button onclick="instantiateTask('${t.id}')" class="w-full bg-white border-2 border-crayon-black rounded-lg py-1 text-xs btn-active">
+                        一键生成 Tracker
+                    </button>
+                </div>
+            `).join('') || '<div class="text-center text-gray-300 text-sm py-10">暂无任务</div>';
+        }
+
+        window.instantiateTask = (id) => {
+            const taskIdx = state.tasks.findIndex(t => t.id == id);
+            const task = state.tasks[taskIdx];
+            task.instantiated = true;
+            
+            const newTracker = {
+                id: Math.random(),
+                title: task.title,
+                type: task.type,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                isRunning: false,
+                elapsed: 0,
+                value: 0
+            };
+            
+            state.trackers.push(newTracker);
+            renderTasks();
+            renderTrackers();
+        };
+
+        function renderTrackers() {
+            const grid = document.getElementById('trackers-grid');
+            grid.innerHTML = state.trackers.map(t => `
+                <div class="tracker-card p-4 rounded-xl sketch-shadow ${t.color}">
+                    <div class="flex justify-between mb-4">
+                        <h3 class="font-bold">${t.title}</h3>
+                        <button onclick="deleteTracker('${t.id}')" class="text-gray-400 hover:text-red-500">&times;</button>
+                    </div>
+                    <div class="flex justify-between items-end">
+                        ${renderTrackerControls(t)}
+                        <span class="text-[10px] opacity-50 font-bold">${t.type}</span>
+                    </div>
+                </div>
+            `).join('') || '<div class="text-center text-gray-200 py-10">暂无 Tracker</div>';
+            lucide.createIcons();
+        }
+
+        function renderTrackerControls(t) {
+            if(t.type === 'TIMER') {
+                return `
+                    <div class="flex gap-2 items-center">
+                        <div class="bg-white border-2 border-crayon-black rounded px-2 py-1 font-bold text-2xl w-24 text-center">
+                            ${formatTime(t.elapsed)}
+                        </div>
+                        <button onclick="toggleTimer('${t.id}')" class="w-12 h-12 rounded-full border-2 border-crayon-black flex items-center justify-center ${t.isRunning ? 'bg-crayon-red' : 'bg-crayon-yellow'} sketch-shadow-sm btn-active">
+                            <i data-lucide="${t.isRunning ? 'square' : 'play'}" fill="currentColor" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                `;
+            } else if(t.type === 'COUNTER') {
+                return `
+                    <div class="flex gap-4 items-center">
+                        <span class="text-4xl font-bold">${t.value}</span>
+                        <button onclick="addCounter('${t.id}')" class="w-10 h-10 rounded-full border-2 border-crayon-black bg-crayon-yellow flex items-center justify-center sketch-shadow-sm btn-active">
+                            <i data-lucide="plus" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                return `
+                    <button onclick="toggleCheck('${t.id}')" class="w-full py-2 border-2 border-crayon-black rounded-lg ${t.value ? 'bg-crayon-green' : 'bg-white'} sketch-shadow-sm btn-active">
+                        ${t.value ? '已完成' : '标记完成'}
+                    </button>
+                `;
+            }
+        }
+
+        window.toggleTimer = (id) => {
+            const t = state.trackers.find(tr => tr.id == id);
+            t.isRunning = !t.isRunning;
+            if(t.isRunning) {
+                t.startTime = Date.now();
+                createTimeBlock(t);
+            } else {
+                addPoints(Math.floor(t.elapsed / 60) * 2 + 5);
+            }
+            renderTrackers();
+        };
+
+        window.addCounter = (id) => {
+            const t = state.trackers.find(tr => tr.id == id);
+            t.value++;
+            addPoints(5);
+            renderTrackers();
+        };
+
+        window.toggleCheck = (id) => {
+            const t = state.trackers.find(tr => tr.id == id);
+            t.value = t.value ? 0 : 1;
+            if(t.value) addPoints(50);
+            renderTrackers();
+        };
+
+        window.deleteTracker = (id) => {
+            state.trackers = state.trackers.filter(t => t.id != id);
+            renderTrackers();
+        };
+
+        function addPoints(amt) {
+            state.points += amt;
+            document.getElementById('user-points').innerText = `${state.points} 积分`;
+        }
+
+        function createTimeBlock(tracker) {
+            const block = {
+                id: Math.random(),
+                trackerId: tracker.id,
+                title: tracker.title,
+                start: Date.now(),
+                end: Date.now(),
+                color: tracker.color
+            };
+            state.timeBlocks.push(block);
+        }
+
+        setInterval(() => {
+            let changed = false;
+            state.trackers.forEach(t => {
+                if(t.isRunning) {
+                    t.elapsed++;
+                    changed = true;
+                    const block = state.timeBlocks.find(b => b.trackerId == t.id && (Date.now() - b.end < 2000));
+                    if(block) block.end = Date.now();
+                }
+            });
+            if(changed) {
+                renderTrackers();
+                renderTimeline();
+            }
+        }, 1000);
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline-container');
+            if(!container) return;
+            let html = '';
+            for(let i=0; i<24; i++) {
+                html += `<div class="absolute w-full border-t border-gray-100 text-[10px] text-gray-400 pl-1" style="top: ${(i/24)*100}%">${i}:00</div>`;
+            }
+            state.timeBlocks.forEach(b => {
+                const start = new Date(b.start);
+                const end = new Date(b.end);
+                const startMin = start.getHours() * 60 + start.getMinutes();
+                const endMin = end.getHours() * 60 + end.getMinutes();
+                const duration = Math.max(10, endMin - startMin);
+                html += `
+                    <div class="timeline-block absolute left-8 right-2 rounded-lg p-1 text-[10px] flex items-center justify-center font-bold ${b.color}" 
+                         style="top: ${(startMin/1440)*100}%; height: ${(duration/1440)*100}%">
+                        <span class="truncate">${b.title}</span>
+                    </div>
+                `;
+            });
+            const now = new Date();
+            const nowPos = (now.getHours() * 60 + now.getMinutes()) / 1440 * 100;
+            html += `<div class="absolute w-full border-t-2 border-red-400 z-20 pointer-events-none" style="top: ${nowPos}%"></div>`;
+            container.innerHTML = html;
+        }
+
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>

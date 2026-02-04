@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>时宜 ShiYi - 时间规划</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              'crayon': ['"ZCOOL KuaiLe"', 'cursive', 'sans-serif'],
+            },
+            colors: {
+              'paper': '#fffdf5',
+              'crayon-black': '#2d3436',
+              'crayon-blue': '#74b9ff',
+              'crayon-red': '#ff7675',
+              'crayon-yellow': '#ffeaa7',
+              'crayon-green': '#55efc4',
+              'crayon-purple': '#a29bfe',
+            },
+            boxShadow: {
+              'sketch': '4px 4px 0px 0px #2d3436',
+              'sketch-sm': '2px 2px 0px 0px #2d3436',
+              'sketch-hover': '6px 6px 0px 0px #2d3436',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #f0f4f8;
+        background-image: radial-gradient(#dfe6e9 1px, transparent 1px);
+        background-size: 20px 20px;
+      }
+      /* Custom scrollbar for crayon feel */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #b2bec3;
+        border-radius: 5px;
+        border: 2px solid #f0f4f8;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
